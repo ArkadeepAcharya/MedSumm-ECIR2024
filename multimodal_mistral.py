@@ -145,7 +145,7 @@ class MultimodalLLM(nn.Module):
 
     self.llm_model.config.use_cache = False
 
-    self.kbit_model = prepare_model_for_kbit_training(self.llm_model)
+    self.kbit_model = prepare_model_for_kbit_training(self.llm_model,quantization_config=self.quant_config)
 
 
     self.config = LoraConfig(
@@ -234,7 +234,7 @@ class MultimodalLLM(nn.Module):
 
 
 
-    outputs = self.llm_model(
+    outputs = self.adapter_model(
                 inputs_embeds=input_embeds,
                 attention_mask=attention_mask,
                 return_dict=True,

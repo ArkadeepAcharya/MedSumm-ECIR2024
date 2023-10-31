@@ -134,7 +134,7 @@ class MultimodalLLM(nn.Module):
                             bnb_4bit_compute_dtype=torch.bfloat16
                         )
 
-    self.llm_model = AutoModelForCausalLM.from_pretrained(model_name)
+    self.llm_model = AutoModelForCausalLM.from_pretrained(model_name,quantization_config=self.quant_config)
 
     for name, param in self.llm_model.named_parameters():
       param.requires_grad = False
@@ -220,7 +220,7 @@ class MultimodalLLM(nn.Module):
 
 
 
-    outputs = self.llm_model(
+    outputs = self.adapter_model(
                 inputs_embeds=input_embeds,
                 attention_mask=attention_mask,
                 return_dict=True,
